@@ -4,20 +4,31 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Which SemVer level to bump (major/minor/patch)'
+        description: 'Which SemVer level to bump'
+        type: choice
         required: true
         default: patch
+        options:
+          - major
+          - premajor
+          - minor
+          - preminor
+          - patch
+          - prepatch
+          - prerelease
       push:
         description: 'Whether to tag and push to the remote repository'
+        type: boolean
         required: false
-        default: 'true'
+        default: false
       filter:
         description: 'Filter for the tag to bump, for eg: 1.2'
         required: false
       prefix_with_v:
         description: 'Whether to prefix the version with a "v"'
+        type: boolean
         required: false
-        default: 'true'
+        default: false
       prerelease_identifier_base:
         description: 'Prerelease Identifier Base'
         required: false
