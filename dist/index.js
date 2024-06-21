@@ -28800,7 +28800,7 @@ const semver_1 = __importDefault(__nccwpck_require__(1383));
  * console.log(tags) // ['v0.1.0', 'v0.1.1']
  */
 async function list(prefix = '') {
-    await (0, exec_1.exec)('git', ['fetch', '--prune', '--unshallow', '--tags']);
+    await (0, exec_1.exec)('git', ['fetch', '--tags']);
     const tagsOutput = await (0, exec_1.getExecOutput)('git', [
         'tag',
         '--list',
@@ -28809,7 +28809,9 @@ async function list(prefix = '') {
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
-    return tagsOutput.stdout.split('\n').filter(tag => semver_1.default.valid(tag));
+    return tagsOutput.stdout
+        .split('\n')
+        .filter(tag => semver_1.default.valid(semver_1.default.coerce(tag)));
 }
 exports.list = list;
 /**

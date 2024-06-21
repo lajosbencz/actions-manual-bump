@@ -14,7 +14,7 @@ import semver from 'semver'
  * console.log(tags) // ['v0.1.0', 'v0.1.1']
  */
 export async function list(prefix = ''): Promise<string[]> {
-  await exec('git', ['fetch', '--prune', '--unshallow', '--tags'])
+  await exec('git', ['fetch', '--tags'])
   const tagsOutput = await getExecOutput('git', [
     'tag',
     '--list',
@@ -23,7 +23,9 @@ export async function list(prefix = ''): Promise<string[]> {
   if (tagsOutput.exitCode !== 0) {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
-  return tagsOutput.stdout.split('\n').filter(tag => semver.valid(tag))
+  return tagsOutput.stdout
+    .split('\n')
+    .filter(tag => semver.valid(semver.coerce(tag)))
 }
 
 /**
