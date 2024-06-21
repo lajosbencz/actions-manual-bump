@@ -17,7 +17,7 @@ on:
           - prepatch
           - prerelease
       push:
-        description: 'Whether to tag and push to the remote repository'
+        description: 'Tag and push to the remote repository'
         type: boolean
         required: false
         default: false
@@ -25,10 +25,10 @@ on:
         description: 'Filter for the tag to bump, for eg: 1.2'
         required: false
       prefix_with_v:
-        description: 'Whether to prefix the version with a "v"'
+        description: 'Prefix the version with a "v"'
         type: boolean
         required: false
-        default: false
+        default: true
       prerelease_identifier_base:
         description: 'Prerelease Identifier Base'
         required: false
