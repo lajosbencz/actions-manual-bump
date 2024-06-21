@@ -28800,7 +28800,7 @@ const semver_1 = __importDefault(__nccwpck_require__(1383));
  * console.log(tags) // ['v0.1.0', 'v0.1.1']
  */
 async function list(prefix = '') {
-    await (0, exec_1.exec)('git', ['fetch', '--tags']);
+    await (0, exec_1.exec)('git', ['fetch', '--prune', '--unshallow', '--tags']);
     const tagsOutput = await (0, exec_1.getExecOutput)('git', [
         'tag',
         '--list',
