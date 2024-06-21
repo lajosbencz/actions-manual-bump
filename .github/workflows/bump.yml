@@ -22,8 +22,8 @@ on:
         required: false
         default: 'false'
         options:
-          - true
-          - false
+          - 'true'
+          - 'false'
       filter:
         description: 'Filter for the tag to bump, for eg: 1.2'
         required: false
