@@ -28875,7 +28875,7 @@ async function push(tag, target_commit = 'HEAD', committer = {
 }) {
     await (0, exec_1.exec)('git', ['config', '--global', 'user.name', committer.name]);
     await (0, exec_1.exec)('git', ['config', '--global', 'user.email', committer.email]);
-    await (0, exec_1.exec)('git', ['tag', '-a', tag, target_commit]);
+    await (0, exec_1.exec)('git', ['tag', '-a', tag, '-m', tag, target_commit]);
     await (0, exec_1.exec)('git', ['push', 'origin', tag]);
 }
 exports.push = push;
