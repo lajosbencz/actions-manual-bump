@@ -96,6 +96,6 @@ export async function push(
 ): Promise<void> {
   await exec('git', ['config', '--global', 'user.name', committer.name])
   await exec('git', ['config', '--global', 'user.email', committer.email])
-  await exec('git', ['tag', '-a', tag, target_commit])
+  await exec('git', ['tag', '-a', tag, '-m', tag, target_commit])
   await exec('git', ['push', 'origin', tag])
 }
