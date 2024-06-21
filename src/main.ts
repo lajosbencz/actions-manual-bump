@@ -12,13 +12,9 @@ export async function run(): Promise<void> {
     const releaseType: ReleaseType = (core.getInput('release_type', {
       required: true
     }) || 'prepatch') as ReleaseType
-    const push = ['yes', 'true', '1'].includes(
-      core.getInput('push').toLowerCase()
-    )
+    const push = core.getBooleanInput('push')
     const filter = core.getInput('filter').replace(/^v/, '') || ''
-    const prefixWithV = core.getBooleanInput('prefix_with_v', {
-      required: true
-    })
+    const prefixWithV = core.getBooleanInput('prefix_with_v')
     const prerelease = core.getInput('prerelease_identifier_base') || ''
     const commitHash = core.getInput('commit_hash') || 'HEAD'
 
@@ -43,6 +39,7 @@ export async function run(): Promise<void> {
       core.notice('No previous tags found.')
       oldTag = `0.0.0`
     }
+    oldTag = prefix + oldTag
     core.debug(`Last Tag: ${oldTag}`)
 
     // bump the tag

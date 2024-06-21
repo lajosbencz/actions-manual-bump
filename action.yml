@@ -18,6 +18,7 @@ inputs:
   push:
     description: 'Whether to tag and push to the remote repository'
     required: false
+    default: 'false'
   filter:
     description: 'Filter for the tag to bump, for eg: 1.2'
     required: false
