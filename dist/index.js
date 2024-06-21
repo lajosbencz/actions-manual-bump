@@ -28728,7 +28728,7 @@ async function run() {
         const releaseType = (core.getInput('release_type', {
             required: true
         }) || 'prepatch');
-        const push = core.getBooleanInput('push');
+        const push = ['yes', 'true', '1'].includes(core.getInput('push').toLowerCase());
         const filter = core.getInput('filter').replace(/^v/, '') || '';
         const prefixWithV = core.getBooleanInput('prefix_with_v', {
             required: true
