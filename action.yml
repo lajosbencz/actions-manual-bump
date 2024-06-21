@@ -1,24 +1,21 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Manual Version Bump'
+description: 'Manual action for bumping of semver tag and optional release'
+author: 'lajosbencz'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
+runs:
+  using: node20
+  main: dist/index.js
+
 branding:
-  icon: 'heart'
+  icon: 'tag'
   color: 'red'
 
-# Define your inputs here.
 inputs:
   milliseconds:
     description: 'Your input description here'
     required: true
     default: '1000'
 
-# Define your outputs here.
 outputs:
   time:
     description: 'Your output description here'
-
-runs:
-  using: node20
-  main: dist/index.js
