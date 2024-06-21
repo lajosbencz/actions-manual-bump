@@ -14,7 +14,7 @@ import semver from 'semver'
  * console.log(tags) // ['v0.1.0', 'v0.1.1']
  */
 export async function list(prefix = ''): Promise<string[]> {
-  await exec('git', ['fetch', '--tags'])
+  await exec('git', ['fetch', '--prune', '--unshallow', '--tags'])
   const tagsOutput = await getExecOutput('git', [
     'tag',
     '--list',
