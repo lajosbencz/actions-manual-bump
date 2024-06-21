@@ -1,4 +1,1 @@
-precommit: |
-  npm run package && \
-    git add dist/ && \
-    (git diff-index --quiet HEAD -- dist/ || git commit --amend --no-edit --no-verify)
+npm run package && git add dist/ && (git diff-index --quiet HEAD -- dist/ || git commit --amend --no-edit --no-verify)
