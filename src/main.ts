@@ -38,15 +38,13 @@ export async function run(): Promise<void> {
     // get the last tag
     let oldTag = tag.latest(tags)
     if (!oldTag) {
-      core.notice(
-        'No previous tags found. Defaulting to 0.0.0 for the last tag.'
-      )
-      oldTag = `${prefix}0.0.0`
+      core.notice('No previous tags found.')
+      oldTag = `0.0.0`
     }
     core.debug(`Last Tag: ${oldTag}`)
 
     // bump the tag
-    const newTag = tag.bump(oldTag, releaseType, prerelease)
+    const newTag = prefix + tag.bump(oldTag, releaseType, prerelease)
     core.info(`New Tag: ${newTag}`)
 
     if (push) {
