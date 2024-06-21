@@ -2,6 +2,29 @@ name: Manual Version Bump
 
 on:
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Which SemVer level to bump (major/minor/patch)'
+        required: true
+        default: patch
+      push:
+        description: 'Whether to tag and push to the remote repository'
+        required: false
+        default: 'true'
+      filter:
+        description: 'Filter for the tag to bump, for eg: 1.2'
+        required: false
+      prefix_with_v:
+        description: 'Whether to prefix the version with a "v"'
+        required: false
+        default: 'true'
+      prerelease_identifier_base:
+        description: 'Prerelease Identifier Base'
+        required: false
+      commit_hash:
+        description: 'The commit hash to tag'
+        required: false
+        default: HEAD
 
 permissions:
   contents: write
