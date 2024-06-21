@@ -34,11 +34,8 @@ inputs:
     required: false
     default: HEAD
 
-  milliseconds:
-    description: 'Milliseconds to wait before the action starts'
-    required: false
-    default: '500'
-
 outputs:
-  time:
-    description: 'Your output description here'
+  old_tag:
+    description: 'Latest tag before bump'
+  new_tag:
+    description: 'New tag after bump'

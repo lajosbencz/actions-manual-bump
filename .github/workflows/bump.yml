@@ -45,4 +45,5 @@ jobs:
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.run.outputs.time }}"
+        run: |
+          echo "Bumped from ${{ steps.run.outputs.old_tag }} to ${{ steps.run.outputs.new_tag }}"
