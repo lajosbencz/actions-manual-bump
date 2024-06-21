@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# Run build script if changes affect src/ folder
+if git diff-tree --name-only --exit-code 'HEAD@{1}' 'HEAD' -- src/ >/dev/null; then
+  echo "Changes detected in src/ folder. Running package..."
+  npm run package
+  git add dist/
+  git commit --amend --no-edit --no-verify
+  echo "Build committed."
+fi

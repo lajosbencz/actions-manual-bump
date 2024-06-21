@@ -1,1 +1,0 @@
-npm run package && git add dist/ && (git diff-index --quiet HEAD -- dist/ || { echo 'missing commit for dist/ changes'; exit 1; })
