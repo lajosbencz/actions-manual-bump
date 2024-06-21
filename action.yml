@@ -33,6 +33,14 @@ inputs:
     description: 'The commit hash to tag'
     required: false
     default: HEAD
+  commiter_name:
+    description: 'The name of the commiter'
+    required: false
+    default: github-actions
+  commiter_email:
+    description: 'The email of the commiter'
+    required: false
+    default: github-actions@github.com
 
 outputs:
   old_tag:

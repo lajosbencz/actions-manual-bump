@@ -92,7 +92,7 @@ export async function push(
   tag: string,
   target_commit = 'HEAD',
   committer: { name: string; email: string } = {
-    name: 'github-actions',
+    name: 'Github Actions',
     email: 'github-actions@github.com'
   }
 ): Promise<void> {

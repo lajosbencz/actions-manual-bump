@@ -17,6 +17,10 @@ export async function run(): Promise<void> {
     const prefixWithV = core.getBooleanInput('prefix_with_v')
     const prerelease = core.getInput('prerelease_identifier_base') || ''
     const commitHash = core.getInput('commit_hash') || 'HEAD'
+    const committer = {
+      name: core.getInput('committer_name') || 'github-actions',
+      email: core.getInput('committer_email') || 'github-actions@github.com'
+    }
 
     // process inputs
     const prefix = prefixWithV ? 'v' : ''
@@ -47,7 +51,7 @@ export async function run(): Promise<void> {
     core.info(`New Tag: ${newTag}`)
 
     if (push) {
-      await tag.push(newTag, commitHash)
+      await tag.push(newTag, commitHash, committer)
     }
 
     // set output

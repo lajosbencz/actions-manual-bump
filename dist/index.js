@@ -28733,6 +28733,10 @@ async function run() {
         const prefixWithV = core.getBooleanInput('prefix_with_v');
         const prerelease = core.getInput('prerelease_identifier_base') || '';
         const commitHash = core.getInput('commit_hash') || 'HEAD';
+        const committer = {
+            name: core.getInput('committer_name') || 'github-actions',
+            email: core.getInput('committer_email') || 'github-actions@github.com'
+        };
         // process inputs
         const prefix = prefixWithV ? 'v' : '';
         // print inputs
@@ -28757,7 +28761,7 @@ async function run() {
         const newTag = prefix + tag.bump(oldTag, releaseType, prerelease);
         core.info(`New Tag: ${newTag}`);
         if (push) {
-            await tag.push(newTag, commitHash);
+            await tag.push(newTag, commitHash, committer);
         }
         // set output
         core.setOutput('old_tag', oldTag);
@@ -28871,7 +28875,7 @@ exports.bump = bump;
  * await push('v0.1.0', 'HEAD')
  */
 async function push(tag, target_commit = 'HEAD', committer = {
-    name: 'github-actions',
+    name: 'Github Actions',
     email: 'github-actions@github.com'
 }) {
     await (0, exec_1.exec)('git', ['config', '--global', 'user.name', committer.name]);
