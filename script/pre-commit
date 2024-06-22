@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
 
-npm run package && \
-  git add dist/ # && \
-#  git commit --amend --no-edit --no-verify
+npm run bundle && git add dist/

@@ -1,8 +1,7 @@
 {
   "name": "action-manual-bump",
   "description": "GitHub Actions TypeScript template",
-  "version": "0.0.1",
-  "author": "",
+  "author": "Lajos Bencz <lajos.bencz@gmail.com>",
   "private": true,
   "homepage": "https://github.com/actions/typescript-action",
   "repository": {
