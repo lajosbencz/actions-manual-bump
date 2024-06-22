@@ -1,3 +1,6 @@
 #!/usr/bin/env sh
 
-npm run bundle && git add dist/
+if ! git diff-index --cached --quiet HEAD -- src/; then
+  npm run bundle && git add dist/
+fi
+
