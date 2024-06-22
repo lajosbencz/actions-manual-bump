@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { ReleaseType } from 'semver'
+import semver, { ReleaseType } from 'semver'
 import * as tag from './tag'
 
 /**
@@ -56,7 +56,9 @@ export async function run(): Promise<void> {
 
     // set output
     core.setOutput('old_tag', oldTag)
+    core.setOutput('old_tag_semver', semver.coerce(oldTag))
     core.setOutput('new_tag', newTag)
+    core.setOutput('new_tag_semver', semver.coerce(newTag))
   } catch (e) {
     if (e instanceof Error) core.setFailed(e.message)
     else core.setFailed(`Unexpected error: ${e}`)

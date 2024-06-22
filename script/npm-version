@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+PACKAGE_JSON="$(dirname $(dirname $0))/package.json"
+
+if [ $# -ne 1 ] || [ -z "$1" ] ; then
+    echo 'Usage: npm-version <new-version>'
+    exit 1
+fi
+
+new_version="$1"
+current_version=$(grep -o '"version": "[^"]*"' "${PACKAGE_JSON}" | cut -d '"' -f 4)
+
+sed -i -e "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/" "${PACKAGE_JSON}"
+echo "Updating version in ${PACKAGE_JSON} to ${new_version}"
