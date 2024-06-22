@@ -28820,17 +28820,14 @@ const semver_1 = __importDefault(__nccwpck_require__(1383));
  */
 async function list(prefix = '') {
     await (0, exec_1.exec)('git', ['fetch', '--tags']);
-    const tagsOutput = await (0, exec_1.getExecOutput)('git', [
-        'tag',
-        '--list'
-        // `'${prefix}*'`
-    ]);
+    const tagsOutput = await (0, exec_1.getExecOutput)('git', ['tag', '--list']);
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
     const allTags = tagsOutput.stdout.split('\n');
     (0, core_1.debug)(`All tags: ${allTags.join(' | ')}`);
     return allTags
+        .filter(t => t.startsWith(prefix))
         .map(t => semver_1.default.coerce(t)?.toString())
         .filter(t => semver_1.default.valid(t));
 }

@@ -16,17 +16,14 @@ import semver from 'semver'
  */
 export async function list(prefix = ''): Promise<string[]> {
   await exec('git', ['fetch', '--tags'])
-  const tagsOutput = await getExecOutput('git', [
-    'tag',
-    '--list'
-    // `'${prefix}*'`
-  ])
+  const tagsOutput = await getExecOutput('git', ['tag', '--list'])
   if (tagsOutput.exitCode !== 0) {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
   const allTags = tagsOutput.stdout.split('\n')
   debug(`All tags: ${allTags.join(' | ')}`)
   return allTags
+    .filter(t => t.startsWith(prefix))
     .map(t => semver.coerce(t)?.toString())
     .filter(t => semver.valid(t)) as string[]
 }
