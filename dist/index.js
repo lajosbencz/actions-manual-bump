@@ -28771,14 +28771,14 @@ async function run() {
             await tag.push(newTag);
         }
         // set output
-        const v = semver_1.default.coerce(newTag);
+        const v = semver_1.default.coerce(newTag, { loose: true });
         if (!v) {
             throw new Error(`Unexpected version was generated: ${newTag}`);
         }
         const isDraft = v.compare('0.1.0') < 0;
         const isPrerelease = (!isDraft && v.compare('1.0.0') < 0) || v.prerelease.length > 0;
         core.setOutput('old_tag', oldTag);
-        core.setOutput('old_tag_semver', semver_1.default.coerce(oldTag)?.version);
+        core.setOutput('old_tag_semver', semver_1.default.coerce(oldTag, { loose: true })?.version);
         core.setOutput('new_tag', newTag);
         core.setOutput('new_tag_semver', v.version);
         core.setOutput('draft', isDraft);
@@ -28831,8 +28831,8 @@ async function list(prefix = '') {
     (0, core_1.debug)(`All tags: ${allTags.join(' | ')}`);
     return allTags
         .filter(t => t.startsWith(prefix))
-        .map(t => semver_1.default.coerce(t)?.toString())
-        .filter(t => semver_1.default.valid(t));
+        .map(t => semver_1.default.coerce(t, { loose: true })?.toString())
+        .filter(t => semver_1.default.valid(t, { loose: true }));
 }
 exports.list = list;
 /**
@@ -28847,7 +28847,7 @@ function latest(tags) {
     if (tags.length < 1) {
         return null;
     }
-    const sortedTags = semver_1.default.rsort(tags);
+    const sortedTags = semver_1.default.rsort(tags, { loose: true });
     return sortedTags.length > 0 ? sortedTags[0] : null;
 }
 exports.latest = latest;

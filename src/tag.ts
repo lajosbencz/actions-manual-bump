@@ -24,8 +24,8 @@ export async function list(prefix = ''): Promise<string[]> {
   debug(`All tags: ${allTags.join(' | ')}`)
   return allTags
     .filter(t => t.startsWith(prefix))
-    .map(t => semver.coerce(t)?.toString())
-    .filter(t => semver.valid(t)) as string[]
+    .map(t => semver.coerce(t, { loose: true })?.toString())
+    .filter(t => semver.valid(t, { loose: true })) as string[]
 }
 
 /**
@@ -40,7 +40,7 @@ export function latest(tags: string[]): string | null {
   if (tags.length < 1) {
     return null
   }
-  const sortedTags = semver.rsort(tags)
+  const sortedTags = semver.rsort(tags, { loose: true })
   return sortedTags.length > 0 ? sortedTags[0] : null
 }
 
