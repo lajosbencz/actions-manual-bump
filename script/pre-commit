@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
-if ! git diff-index --cached --quiet HEAD -- src/; then
+if ! git diff-index --quiet HEAD -- src/; then
+  echo 'Needs packaging with: npm run package'
+  exit 0
   echo "Changes detected in src/ folder packaging..."
   npm run package
   git add dist/
