@@ -28813,6 +28813,7 @@ async function list(prefix = '') {
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
+    console.debug(`raw tags output:\n${tagsOutput.stdout}`);
     return tagsOutput.stdout.split('\n');
 }
 exports.list = list;
