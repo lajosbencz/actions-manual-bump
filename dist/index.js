@@ -28757,7 +28757,7 @@ async function run() {
         let oldTag = tag.latest(tags);
         if (!oldTag) {
             core.notice('No previous tags found.');
-            oldTag = prefix + `0.0.0`;
+            oldTag = `${prefix}0.0.0`;
         }
         core.info(`Last Tag: ${oldTag}`);
         // bump the tag
