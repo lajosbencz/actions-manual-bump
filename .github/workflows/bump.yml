@@ -74,6 +74,13 @@ jobs:
             '${{ github.event.inputs.prerelease_identifier_base }}'
           commit_hash: '${{ github.event.inputs.commit_hash }}'
 
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            README.md
+            LICENSE
+
       - name: Print Output
         id: output
         run: |
@@ -82,4 +89,4 @@ jobs:
           echo "  new: ${{ steps.tag.outputs.new_tag_semver }}"
           echo "tag:"
           echo "  old: ${{ steps.tag.outputs.old_tag }}"
-          echo "  new: ${{ steps.tag.outputs.new_tag }}"
+          echo "  new: ${{ steps.tag.outputs.new_tag_semver }}"
