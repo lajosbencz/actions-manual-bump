@@ -28789,6 +28789,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.push = exports.bump = exports.latest = exports.list = void 0;
+const core_1 = __nccwpck_require__(2186);
 const exec_1 = __nccwpck_require__(1514);
 const semver_1 = __importDefault(__nccwpck_require__(1383));
 /**
@@ -28807,13 +28808,17 @@ async function list(prefix = '') {
     await (0, exec_1.exec)('git', ['fetch', '--tags']);
     const tagsOutput = await (0, exec_1.getExecOutput)('git', [
         'tag',
-        '--list',
-        `'${prefix}*'`
+        '--list'
+        // `'${prefix}*'`
     ]);
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
-    return tagsOutput.stdout.split('\n');
+    const allTags = tagsOutput.stdout.split('\n');
+    (0, core_1.debug)(`All tags: ${allTags.join(' | ')}`);
+    return allTags
+        .map(t => semver_1.default.coerce(t)?.toString())
+        .filter(t => semver_1.default.valid(t));
 }
 exports.list = list;
 /**

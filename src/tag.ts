@@ -1,3 +1,4 @@
+import { debug } from '@actions/core'
 import { exec, getExecOutput } from '@actions/exec'
 import semver from 'semver'
 
@@ -18,12 +19,16 @@ export async function list(prefix = ''): Promise<string[]> {
   const tagsOutput = await getExecOutput('git', [
     'tag',
     '--list',
-    `'${prefix}*'`
+    // `'${prefix}*'`
   ])
   if (tagsOutput.exitCode !== 0) {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
-  return tagsOutput.stdout.split('\n')
+  const allTags = tagsOutput.stdout.split('\n')
+  debug(`All tags: ${allTags.join(' | ')}`)
+  return allTags
+    .map(t => semver.coerce(t)?.toString())
+    .filter(t => semver.valid(t)) as string[]
 }
 
 /**
