@@ -28748,7 +28748,7 @@ async function run() {
         }
         // list tags
         const tags = await tag.list(`${prefix}${filter}`);
-        core.debug(`Filtered tags: ${tags.join(' | ')}`);
+        core.debug(`Tags: ${tags.join(' | ')}`);
         // get the last tag
         let oldTag = tag.latest(tags);
         if (!oldTag) {
@@ -28813,7 +28813,6 @@ async function list(prefix = '') {
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
-    console.debug(`raw tags output:\n${tagsOutput.stdout}`);
     return tagsOutput.stdout.split('\n');
 }
 exports.list = list;

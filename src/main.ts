@@ -35,7 +35,7 @@ export async function run(): Promise<void> {
 
     // list tags
     const tags: string[] = await tag.list(`${prefix}${filter}`)
-    core.debug(`Filtered tags: ${tags.join(' | ')}`)
+    core.debug(`Tags: ${tags.join(' | ')}`)
 
     // get the last tag
     let oldTag = tag.latest(tags)

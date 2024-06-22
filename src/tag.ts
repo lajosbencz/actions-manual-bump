@@ -23,7 +23,6 @@ export async function list(prefix = ''): Promise<string[]> {
   if (tagsOutput.exitCode !== 0) {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
-  console.debug(`raw tags output:\n${tagsOutput.stdout}`)
   return tagsOutput.stdout.split('\n')
 }
 
