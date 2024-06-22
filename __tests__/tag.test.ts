@@ -1,6 +1,27 @@
-import { latest, bump } from '../src/tag'
+import { latest, bump, filterValid } from '../src/tag'
 
 describe('tag.js', () => {
+  describe('filterValid()', () => {
+    const cases = [
+      ['0.0.1-alpha.0', true],
+      ['0.2.0-1', true],
+      ['1.0.0', true],
+      ['edge', false],
+      ['0.1.2', true]
+    ]
+    const tags = cases.map(e => `${e?.[0]}`)
+    it('filter valid tags', () => {
+      const ok: string[] = []
+      const nok: string[] = []
+      for (const [tag, isValid] of cases) {
+        const s_tag = `${tag}`
+        if (isValid) ok.push(s_tag)
+        else nok.push(s_tag)
+      }
+      expect(filterValid(tags)).toEqual(ok)
+    })
+  })
+
   describe('latest()', () => {
     it('return nothing', () => {
       expect(latest([])).toBeNull()

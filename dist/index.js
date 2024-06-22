@@ -28714,13 +28714,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const semver_1 = __importDefault(__nccwpck_require__(1383));
 const tag = __importStar(__nccwpck_require__(9422));
 /**
  * Runs the action
@@ -28771,14 +28767,14 @@ async function run() {
             await tag.push(newTag);
         }
         // set output
-        const v = semver_1.default.coerce(newTag, { loose: true });
+        const v = tag.coerce(newTag);
         if (!v) {
             throw new Error(`Unexpected version was generated: ${newTag}`);
         }
         const isDraft = v.compare('0.1.0') < 0;
         const isPrerelease = (!isDraft && v.compare('1.0.0') < 0) || v.prerelease.length > 0;
         core.setOutput('old_tag', oldTag);
-        core.setOutput('old_tag_semver', semver_1.default.coerce(oldTag, { loose: true })?.version);
+        core.setOutput('old_tag_semver', tag.coerce(oldTag)?.version);
         core.setOutput('new_tag', newTag);
         core.setOutput('new_tag_semver', v.version);
         core.setOutput('draft', isDraft);
@@ -28805,13 +28801,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.push = exports.create = exports.bump = exports.latest = exports.list = void 0;
+exports.push = exports.create = exports.bump = exports.latest = exports.list = exports.filterValid = exports.coerce = void 0;
 const exec_1 = __nccwpck_require__(1514);
 const semver_1 = __importDefault(__nccwpck_require__(1383));
 /**
+ * Coerce a tag into a SemVer object, preserve prereleases.
+ * @param tag The tag to coerce.
+ * @returns The coerced SemVer object.
+ */
+function coerce(tag) {
+    return semver_1.default.coerce(tag, { includePrerelease: true });
+}
+exports.coerce = coerce;
+/**
+ * Filter valid tags from a list of tags.
+ * @param tags The list of tags to filter.
+ * @param prefix The prefix to filter tags by.
+ * @returns The list of valid tags.
+ * @example
+ * const tags = filterValid(['v0.1.0', 'v0.1.1', 'edge', 'v0.2.0'])
+ * console.log(tags) // ['0.1.0', '0.1.1', '0.2.0']
+ */
+function filterValid(tags, prefix = '') {
+    return tags
+        .filter(t => prefix.length < 1 || t.startsWith(prefix))
+        .map(t => coerce(t)?.raw || '')
+        .filter(t => t.length > 0 && semver_1.default.valid(t));
+}
+exports.filterValid = filterValid;
+/**
  * List tags from the remote repository.
- * @param {string} prefix The prefix to filter tags by.
- * @returns {Promise<string[]>} Resolves with the list of tags.
+ * @param prefix The prefix to filter tags by.
+ * @returns Resolves with the list of tags.
  * @throws {Error} Throws an error if the tags cannot be listed.
  * @example
  * const tags = await list()
@@ -28826,11 +28847,8 @@ async function list(prefix = '') {
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
-    const allTags = tagsOutput.stdout.split('\n');
-    return allTags
-        .filter(t => prefix.length < 1 || t.startsWith(prefix))
-        .map(t => semver_1.default.coerce(t, { loose: true })?.raw || '')
-        .filter(t => t && semver_1.default.valid(t, { loose: true }));
+    const tags = tagsOutput.stdout.split('\n');
+    return filterValid(tags, prefix);
 }
 exports.list = list;
 /**
@@ -28845,7 +28863,7 @@ function latest(tags) {
     if (tags.length < 1) {
         return null;
     }
-    const sortedTags = semver_1.default.rsort(tags, { loose: true });
+    const sortedTags = semver_1.default.rsort(tags);
     return sortedTags.length > 0 ? sortedTags[0] : null;
 }
 exports.latest = latest;

@@ -1,10 +1,35 @@
 import { exec, getExecOutput } from '@actions/exec'
-import semver from 'semver'
+import semver, { SemVer } from 'semver'
+
+/**
+ * Coerce a tag into a SemVer object, preserve prereleases.
+ * @param tag The tag to coerce.
+ * @returns The coerced SemVer object.
+ */
+export function coerce(tag: string): SemVer | null {
+  return semver.coerce(tag, { includePrerelease: true })
+}
+
+/**
+ * Filter valid tags from a list of tags.
+ * @param tags The list of tags to filter.
+ * @param prefix The prefix to filter tags by.
+ * @returns The list of valid tags.
+ * @example
+ * const tags = filterValid(['v0.1.0', 'v0.1.1', 'edge', 'v0.2.0'])
+ * console.log(tags) // ['0.1.0', '0.1.1', '0.2.0']
+ */
+export function filterValid(tags: string[], prefix = ''): string[] {
+  return tags
+    .filter(t => prefix.length < 1 || t.startsWith(prefix))
+    .map(t => coerce(t)?.raw || '')
+    .filter(t => t.length > 0 && semver.valid(t))
+}
 
 /**
  * List tags from the remote repository.
- * @param {string} prefix The prefix to filter tags by.
- * @returns {Promise<string[]>} Resolves with the list of tags.
+ * @param prefix The prefix to filter tags by.
+ * @returns Resolves with the list of tags.
  * @throws {Error} Throws an error if the tags cannot be listed.
  * @example
  * const tags = await list()
@@ -19,11 +44,8 @@ export async function list(prefix = ''): Promise<string[]> {
   if (tagsOutput.exitCode !== 0) {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
-  const allTags = tagsOutput.stdout.split('\n')
-  return allTags
-    .filter(t => prefix.length < 1 || t.startsWith(prefix))
-    .map(t => semver.coerce(t, { loose: true })?.raw || '')
-    .filter(t => t && semver.valid(t, { loose: true }))
+  const tags = tagsOutput.stdout.split('\n')
+  return filterValid(tags, prefix)
 }
 
 /**
@@ -38,7 +60,7 @@ export function latest(tags: string[]): string | null {
   if (tags.length < 1) {
     return null
   }
-  const sortedTags = semver.rsort(tags, { loose: true })
+  const sortedTags = semver.rsort(tags)
   return sortedTags.length > 0 ? sortedTags[0] : null
 }
 
