@@ -28734,7 +28734,7 @@ async function run() {
         const prerelease = core.getInput('prerelease_identifier_base') || '';
         const commitHash = core.getInput('commit_hash') || 'HEAD';
         const committer = {
-            name: core.getInput('committer_name') || 'github actions',
+            name: core.getInput('committer_name') || 'github-actions',
             email: core.getInput('committer_email') || 'github-actions@github.com'
         };
         // process inputs
