@@ -51,7 +51,7 @@ export async function run(): Promise<void> {
     core.info(`New Tag: ${newTag}`)
 
     // tag locally
-    await tag.tag(newTag, commitHash, committer)
+    await tag.create(newTag, commitHash, committer)
 
     if (push) {
       // push to remote

@@ -88,7 +88,7 @@ export function bump(
  * @example
  * await push('v0.1.0', 'HEAD')
  */
-export async function tag(
+export async function create(
   tag: string,
   target_commit = 'HEAD',
   committer: { name: string; email: string } = {
