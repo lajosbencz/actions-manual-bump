@@ -16,17 +16,6 @@ on:
           - patch
           - prepatch
           - prerelease
-      push:
-        description: 'Tag and push to the remote repository'
-        type: choice
-        required: false
-        default: 'false'
-        options:
-          - 'true'
-          - 'false'
-      filter:
-        description: 'Filter for the tag to bump, for eg: 1.2'
-        required: false
       prefix_with_v:
         description: 'Prefix the version with a "v"'
         type: choice
@@ -38,10 +27,6 @@ on:
       prerelease_identifier_base:
         description: 'Prerelease Identifier Base'
         required: false
-      commit_hash:
-        description: 'The commit hash to tag'
-        required: false
-        default: HEAD
 
 permissions:
   contents: write
@@ -56,18 +41,45 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Run Local Action
-        id: run
+      - name: Calculate new tag
+        id: tag
         uses: ./
         with:
-          release_type: "${{ github.event.inputs.release_type }}"
-          push: "${{ github.event.inputs.push }}"
-          filter: "${{ github.event.inputs.filter }}"
-          prefix_with_v: "${{ github.event.inputs.prefix_with_v }}"
-          prerelease_identifier_base: "${{ github.event.inputs.prerelease_identifier_base }}"
-          commit_hash: "${{ github.event.inputs.commit_hash }}"
+          release_type: '${{ github.event.inputs.release_type }}'
+          push: 'false'
+          filter: '${{ github.event.inputs.filter }}'
+          prefix_with_v: '${{ github.event.inputs.prefix_with_v }}'
+          prerelease_identifier_base:
+            '${{ github.event.inputs.prerelease_identifier_base }}'
+          commit_hash: '${{ github.event.inputs.commit_hash }}'
+
+      - name: Update package.json version
+        run: 'script/npm-version ${{ steps.tag.outputs.new_tag_semver }}'
+
+      - name: Commit package.json version
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: bump package.json version
+          file_pattern: 'package.json'
+
+      - name: Run Local Action
+        id: tag-push
+        uses: ./
+        with:
+          release_type: '${{ github.event.inputs.release_type }}'
+          push: 'true'
+          filter: '${{ github.event.inputs.filter }}'
+          prefix_with_v: '${{ github.event.inputs.prefix_with_v }}'
+          prerelease_identifier_base:
+            '${{ github.event.inputs.prerelease_identifier_base }}'
+          commit_hash: '${{ github.event.inputs.commit_hash }}'
 
       - name: Print Output
         id: output
         run: |
-          echo "Bumped from ${{ steps.run.outputs.old_tag }} to ${{ steps.run.outputs.new_tag }}"
+          echo "semver:"
+          echo "  old: ${{ steps.tag.outputs.old_tag_semver }}"
+          echo "  new: ${{ steps.tag.outputs.new_tag_semver }})"
+          echo "tag:"
+          echo "  old: ${{ steps.tag.outputs.old_tag }}"
+          echo "  new: ${{ steps.tag.outputs.new_tag }}"
