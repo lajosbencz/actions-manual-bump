@@ -59,6 +59,13 @@ jobs:
       - name: Run Local Action
         id: run
         uses: ./
+        with:
+          release_type: "${{ github.event.inputs.release_type }}"
+          push: "${{ github.event.inputs.push }}"
+          filter: "${{ github.event.inputs.filter }}"
+          prefix_with_v: "${{ github.event.inputs.prefix_with_v }}"
+          prerelease_identifier_base: "${{ github.event.inputs.prerelease_identifier_base }}"
+          commit_hash: "${{ github.event.inputs.commit_hash }}"
 
       - name: Print Output
         id: output
