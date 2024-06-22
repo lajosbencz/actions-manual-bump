@@ -25,7 +25,6 @@ export async function list(prefix = ''): Promise<string[]> {
   }
   return tagsOutput.stdout
     .split('\n')
-    .filter(tag => semver.valid(semver.coerce(tag)))
 }
 
 /**

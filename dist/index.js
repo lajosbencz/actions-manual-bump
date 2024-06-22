@@ -28813,9 +28813,7 @@ async function list(prefix = '') {
     if (tagsOutput.exitCode !== 0) {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
-    return tagsOutput.stdout
-        .split('\n')
-        .filter(tag => semver_1.default.valid(semver_1.default.coerce(tag)));
+    return tagsOutput.stdout.split('\n');
 }
 exports.list = list;
 /**
