@@ -51,6 +51,7 @@ jobs:
           release_type: '${{ github.event.inputs.release_type }}'
           push: 'false'
           prefix_with_v: '${{ github.event.inputs.prefix_with_v }}'
+          filter: '${{ github.event.inputs.filter }}'
           prerelease_identifier_base:
             '${{ github.event.inputs.prerelease_base }}'
 
@@ -70,6 +71,7 @@ jobs:
           release_type: '${{ github.event.inputs.release_type }}'
           push: 'true'
           prefix_with_v: '${{ github.event.inputs.prefix_with_v }}'
+          filter: '${{ github.event.inputs.filter }}'
           prerelease_identifier_base:
             '${{ github.event.inputs.prerelease_base }}'
 
