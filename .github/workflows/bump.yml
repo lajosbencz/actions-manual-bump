@@ -79,7 +79,7 @@ jobs:
         run: |
           echo "semver:"
           echo "  old: ${{ steps.tag.outputs.old_tag_semver }}"
-          echo "  new: ${{ steps.tag.outputs.new_tag_semver }})"
+          echo "  new: ${{ steps.tag.outputs.new_tag_semver }}"
           echo "tag:"
           echo "  old: ${{ steps.tag.outputs.old_tag }}"
           echo "  new: ${{ steps.tag.outputs.new_tag }}"
