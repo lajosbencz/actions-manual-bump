@@ -47,3 +47,11 @@ outputs:
     description: 'Latest tag before bump'
   new_tag:
     description: 'New tag after bump'
+  old_tag_semver:
+    description: 'Latest semver before bump'
+  new_tag_semver:
+    description: 'New semver after bump'
+  draft:
+    description: 'Whether the new tag is a draft (~0.0.0)'
+  prerelease:
+    description: 'Whether the new tag is a prerelease (^0.1.0)'
