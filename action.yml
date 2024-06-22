@@ -27,7 +27,9 @@ inputs:
     required: false
     default: 'true'
   prerelease_identifier_base:
-    description: 'Prerelease Identifier Base'
+    description:
+      'Prerelease Identifier Base (only takes effect with release_type:
+      prerelease)'
     required: false
   commit_hash:
     description: 'The commit hash to tag'
