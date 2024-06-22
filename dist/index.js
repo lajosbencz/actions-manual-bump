@@ -28757,10 +28757,9 @@ async function run() {
         let oldTag = tag.latest(tags);
         if (!oldTag) {
             core.notice('No previous tags found.');
-            oldTag = `0.0.0`;
+            oldTag = prefix + `0.0.0`;
         }
-        oldTag = prefix + oldTag;
-        core.debug(`Last Tag: ${oldTag}`);
+        core.info(`Last Tag: ${oldTag}`);
         // bump the tag
         const newTag = prefix + tag.bump(oldTag, releaseType, prerelease);
         core.info(`New Tag: ${newTag}`);
@@ -28873,6 +28872,7 @@ exports.latest = latest;
  */
 function bump(oldTag, releaseType, prerelease = '') {
     const newTag = semver_1.default.inc(oldTag, releaseType, prerelease);
+    (0, core_1.debug)(`Bumping ${oldTag} to ${newTag} with ${releaseType} ${prerelease}`);
     if (!newTag) {
         throw new Error(`Failed to ${releaseType} on ${oldTag}`);
     }

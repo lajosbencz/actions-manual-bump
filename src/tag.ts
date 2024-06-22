@@ -70,6 +70,7 @@ export function bump(
   prerelease = ''
 ): string {
   const newTag = semver.inc(oldTag, releaseType, prerelease)
+  debug(`Bumping ${oldTag} to ${newTag} with ${releaseType} ${prerelease}`)
   if (!newTag) {
     throw new Error(`Failed to ${releaseType} on ${oldTag}`)
   }

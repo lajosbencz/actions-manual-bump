@@ -28,6 +28,7 @@ describe('tag.js', () => {
       expect(bump('0.1.0', 'premajor')).toBe('1.0.0-0')
       expect(bump('1.0.0-0', 'premajor')).toBe('2.0.0-0')
       expect(bump('0.0.0', 'prerelease', 'alpha')).toBe('0.0.1-alpha.0')
+      expect(bump('0.0.1-alpha.0', 'prerelease', 'alpha')).toBe('0.0.1-alpha.1')
       expect(bump('0.1.0', 'prerelease', 'alpha')).toBe('0.1.1-alpha.0')
       expect(bump('0.1.1-alpha.0', 'prerelease', 'alpha')).toBe('0.1.1-alpha.1')
       expect(bump('0.1.0', 'prerelease', 'beta')).toBe('0.1.1-beta.0')
