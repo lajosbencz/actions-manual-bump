@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
 if ! git diff-index --cached --quiet HEAD -- src/; then
-  npm run bundle && git add dist/
+  npm run lint && \
+    npm run bundle && \
+    git add dist/
 fi
