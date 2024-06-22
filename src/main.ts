@@ -55,10 +55,18 @@ export async function run(): Promise<void> {
     }
 
     // set output
+    const v = semver.coerce(newTag)
+    if (!v) {
+      throw new Error(`Unexpected version was generated: ${newTag}`)
+    }
+    const isDraft = v.compare('0.1.0') < 0
+    const isPrerelease = !isDraft && v.compare('1.0.0') < 0
     core.setOutput('old_tag', oldTag)
     core.setOutput('old_tag_semver', semver.coerce(oldTag)?.version)
     core.setOutput('new_tag', newTag)
-    core.setOutput('new_tag_semver', semver.coerce(newTag)?.version)
+    core.setOutput('new_tag_semver', v.version)
+    core.setOutput('draft', isDraft)
+    core.setOutput('prerelease', isPrerelease)
   } catch (e) {
     if (e instanceof Error) core.setFailed(e.message)
     else core.setFailed(`Unexpected error: ${e}`)
