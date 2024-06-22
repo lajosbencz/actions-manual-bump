@@ -24,6 +24,9 @@ on:
         options:
           - 'true'
           - 'false'
+      filter:
+        description: 'Filter for the tag to bump, for eg: 1.2'
+        required: false
       prerelease_base:
         description: 'Prerelease Identifier Base'
         required: false

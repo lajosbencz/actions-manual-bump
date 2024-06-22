@@ -77,7 +77,7 @@ export function bump(
 }
 
 /**
- * Push a tag to the remote repository.
+ * Creates tag locally
  * @param tag The tag to push.
  * @param target_commit The commit to tag.
  * @param committer The committer to use.
@@ -88,7 +88,7 @@ export function bump(
  * @example
  * await push('v0.1.0', 'HEAD')
  */
-export async function push(
+export async function tag(
   tag: string,
   target_commit = 'HEAD',
   committer: { name: string; email: string } = {
@@ -99,5 +99,16 @@ export async function push(
   await exec('git', ['config', '--global', 'user.name', committer.name])
   await exec('git', ['config', '--global', 'user.email', committer.email])
   await exec('git', ['tag', '-a', tag, '-m', tag, target_commit])
+}
+
+/**
+ * Push a tag to the remote repository.
+ * @param tag The tag to push.
+ * @returns {Promise<void>} Resolves when the tag is pushed.
+ * @throws {Error} Throws an error if the tag cannot be pushed.
+ * @example
+ * await push('v0.1.0')
+ */
+export async function push(tag: string): Promise<void> {
   await exec('git', ['push', 'origin', tag])
 }

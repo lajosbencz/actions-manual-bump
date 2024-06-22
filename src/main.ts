@@ -50,8 +50,12 @@ export async function run(): Promise<void> {
     const newTag = prefix + tag.bump(oldTag, releaseType, prerelease)
     core.info(`New Tag: ${newTag}`)
 
+    // tag locally
+    await tag.tag(newTag, commitHash, committer)
+
     if (push) {
-      await tag.push(newTag, commitHash, committer)
+      // push to remote
+      await tag.push(newTag)
     }
 
     // set output

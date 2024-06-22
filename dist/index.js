@@ -28764,8 +28764,11 @@ async function run() {
         // bump the tag
         const newTag = prefix + tag.bump(oldTag, releaseType, prerelease);
         core.info(`New Tag: ${newTag}`);
+        // tag locally
+        await tag.tag(newTag, commitHash, committer);
         if (push) {
-            await tag.push(newTag, commitHash, committer);
+            // push to remote
+            await tag.push(newTag);
         }
         // set output
         const v = semver_1.default.coerce(newTag);
@@ -28802,7 +28805,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.push = exports.bump = exports.latest = exports.list = void 0;
+exports.push = exports.tag = exports.bump = exports.latest = exports.list = void 0;
 const core_1 = __nccwpck_require__(2186);
 const exec_1 = __nccwpck_require__(1514);
 const semver_1 = __importDefault(__nccwpck_require__(1383));
@@ -28877,7 +28880,7 @@ function bump(oldTag, releaseType, prerelease = '') {
 }
 exports.bump = bump;
 /**
- * Push a tag to the remote repository.
+ * Creates tag locally
  * @param tag The tag to push.
  * @param target_commit The commit to tag.
  * @param committer The committer to use.
@@ -28888,13 +28891,24 @@ exports.bump = bump;
  * @example
  * await push('v0.1.0', 'HEAD')
  */
-async function push(tag, target_commit = 'HEAD', committer = {
+async function tag(tag, target_commit = 'HEAD', committer = {
     name: 'Github Actions',
     email: 'github-actions@github.com'
 }) {
     await (0, exec_1.exec)('git', ['config', '--global', 'user.name', committer.name]);
     await (0, exec_1.exec)('git', ['config', '--global', 'user.email', committer.email]);
     await (0, exec_1.exec)('git', ['tag', '-a', tag, '-m', tag, target_commit]);
+}
+exports.tag = tag;
+/**
+ * Push a tag to the remote repository.
+ * @param tag The tag to push.
+ * @returns {Promise<void>} Resolves when the tag is pushed.
+ * @throws {Error} Throws an error if the tag cannot be pushed.
+ * @example
+ * await push('v0.1.0')
+ */
+async function push(tag) {
     await (0, exec_1.exec)('git', ['push', 'origin', tag]);
 }
 exports.push = push;
