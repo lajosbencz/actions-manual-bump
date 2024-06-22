@@ -28740,11 +28740,11 @@ async function run() {
         // process inputs
         const prefix = prefixWithV ? 'v' : '';
         // print inputs
-        core.debug(`Release type: ${releaseType}`);
-        core.debug(`Push to remote: ${push}`);
-        core.debug(`Prefix with "v": ${prefixWithV}`);
+        core.info(`Release type: ${releaseType}`);
+        core.info(`Push to remote: ${push}`);
+        core.info(`Prefix with "v": ${prefixWithV}`);
         if (prerelease) {
-            core.debug(`Prerelease Identifier Base: ${prerelease}`);
+            core.info(`Prerelease Identifier Base: ${prerelease}`);
         }
         // list tags
         const tags = await tag.list(`${prefix}${filter}`);

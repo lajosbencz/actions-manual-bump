@@ -18,7 +18,7 @@ export async function list(prefix = ''): Promise<string[]> {
   await exec('git', ['fetch', '--tags'])
   const tagsOutput = await getExecOutput('git', [
     'tag',
-    '--list',
+    '--list'
     // `'${prefix}*'`
   ])
   if (tagsOutput.exitCode !== 0) {
