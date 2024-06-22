@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-# Run build script if changes affect src/ folder
-if git diff-tree --name-only --exit-code 'HEAD@{1}' 'HEAD' -- src/ >/dev/null; then
+if ! git diff-index --cached --quiet HEAD -- src/ >/dev/null; then
   echo "Changes detected in src/ folder. Running package..."
   npm run package
   git add dist/
