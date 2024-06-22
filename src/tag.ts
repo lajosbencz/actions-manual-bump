@@ -1,4 +1,3 @@
-import { debug } from '@actions/core'
 import { exec, getExecOutput } from '@actions/exec'
 import semver from 'semver'
 
@@ -21,11 +20,10 @@ export async function list(prefix = ''): Promise<string[]> {
     throw new Error(`Failed to list tags: ${tagsOutput.stderr}`)
   }
   const allTags = tagsOutput.stdout.split('\n')
-  debug(`All tags: ${allTags.join(' | ')}`)
   return allTags
-    .filter(t => t.startsWith(prefix))
-    .map(t => semver.coerce(t, { loose: true })?.toString())
-    .filter(t => semver.valid(t, { loose: true })) as string[]
+    .filter(t => prefix.length < 1 || t.startsWith(prefix))
+    .map(t => semver.coerce(t, { loose: true })?.raw || '')
+    .filter(t => t && semver.valid(t, { loose: true }))
 }
 
 /**
@@ -70,7 +68,6 @@ export function bump(
   prerelease = ''
 ): string {
   const newTag = semver.inc(oldTag, releaseType, prerelease)
-  debug(`Bumping ${oldTag} to ${newTag} with ${releaseType} ${prerelease}`)
   if (!newTag) {
     throw new Error(`Failed to ${releaseType} on ${oldTag}`)
   }

@@ -28733,7 +28733,7 @@ async function run() {
             required: true
         }) || 'prepatch');
         const push = core.getBooleanInput('push');
-        const filter = core.getInput('filter').replace(/^v/, '') || '';
+        const filter = core.getInput('filter') || '';
         const prefixWithV = core.getBooleanInput('prefix_with_v');
         const prerelease = core.getInput('prerelease_identifier_base') || '';
         const commitHash = core.getInput('commit_hash') || 'HEAD';
@@ -28747,11 +28747,12 @@ async function run() {
         core.info(`Release type: ${releaseType}`);
         core.info(`Push to remote: ${push}`);
         core.info(`Prefix with "v": ${prefixWithV}`);
+        core.info(`Filter: ${filter}`);
         if (prerelease) {
             core.info(`Prerelease Identifier Base: ${prerelease}`);
         }
         // list tags
-        const tags = await tag.list(`${prefix}${filter}`);
+        const tags = await tag.list(`${filter}`);
         core.debug(`Tags: ${tags.join(' | ')}`);
         // get the last tag
         let oldTag = tag.latest(tags);
@@ -28805,7 +28806,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.push = exports.create = exports.bump = exports.latest = exports.list = void 0;
-const core_1 = __nccwpck_require__(2186);
 const exec_1 = __nccwpck_require__(1514);
 const semver_1 = __importDefault(__nccwpck_require__(1383));
 /**
@@ -28827,11 +28827,10 @@ async function list(prefix = '') {
         throw new Error(`Failed to list tags: ${tagsOutput.stderr}`);
     }
     const allTags = tagsOutput.stdout.split('\n');
-    (0, core_1.debug)(`All tags: ${allTags.join(' | ')}`);
     return allTags
-        .filter(t => t.startsWith(prefix))
-        .map(t => semver_1.default.coerce(t, { loose: true })?.toString())
-        .filter(t => semver_1.default.valid(t, { loose: true }));
+        .filter(t => prefix.length < 1 || t.startsWith(prefix))
+        .map(t => semver_1.default.coerce(t, { loose: true })?.raw || '')
+        .filter(t => t && semver_1.default.valid(t, { loose: true }));
 }
 exports.list = list;
 /**
@@ -28872,7 +28871,6 @@ exports.latest = latest;
  */
 function bump(oldTag, releaseType, prerelease = '') {
     const newTag = semver_1.default.inc(oldTag, releaseType, prerelease);
-    (0, core_1.debug)(`Bumping ${oldTag} to ${newTag} with ${releaseType} ${prerelease}`);
     if (!newTag) {
         throw new Error(`Failed to ${releaseType} on ${oldTag}`);
     }

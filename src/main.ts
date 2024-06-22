@@ -13,7 +13,7 @@ export async function run(): Promise<void> {
       required: true
     }) || 'prepatch') as ReleaseType
     const push = core.getBooleanInput('push')
-    const filter = core.getInput('filter').replace(/^v/, '') || ''
+    const filter = core.getInput('filter') || ''
     const prefixWithV = core.getBooleanInput('prefix_with_v')
     const prerelease = core.getInput('prerelease_identifier_base') || ''
     const commitHash = core.getInput('commit_hash') || 'HEAD'
@@ -29,12 +29,13 @@ export async function run(): Promise<void> {
     core.info(`Release type: ${releaseType}`)
     core.info(`Push to remote: ${push}`)
     core.info(`Prefix with "v": ${prefixWithV}`)
+    core.info(`Filter: ${filter}`)
     if (prerelease) {
       core.info(`Prerelease Identifier Base: ${prerelease}`)
     }
 
     // list tags
-    const tags: string[] = await tag.list(`${prefix}${filter}`)
+    const tags: string[] = await tag.list(`${filter}`)
     core.debug(`Tags: ${tags.join(' | ')}`)
 
     // get the last tag
