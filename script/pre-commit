@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-npm run package
-git add dist/
-git commit --amend --no-edit --no-verify
+npm run package && \
+  git add dist/ && \
+  git commit --amend --no-edit --no-verify
