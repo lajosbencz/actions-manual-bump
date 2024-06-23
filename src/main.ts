@@ -41,6 +41,9 @@ export async function run(): Promise<void> {
     // get the last tag
     let oldTag = tag.latest(tags)
     if (!oldTag) {
+      if (filter) {
+        throw new Error(`No tags found with filter: ${filter}`)
+      }
       core.notice('No previous tags found.')
       oldTag = `${prefix}0.0.0`
     }
