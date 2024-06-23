@@ -132,15 +132,3 @@ export async function create(
 export async function push(tag: string): Promise<void> {
   await exec('git', ['push', 'origin', tag])
 }
-
-/**
- * Remove a tag from the local repository.
- * @param tag The tag to remove.
- * @returns {Promise<void>} Resolves when the tag is removed.
- * @throws {Error} Throws an error if the tag cannot be removed.
- * @example
- * await remove('v0.1.0')
- */
-export async function remove(tag: string): Promise<void> {
-  await exec('git', ['tag', '-d', tag])
-}
