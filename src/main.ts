@@ -59,6 +59,8 @@ export async function run(): Promise<void> {
     if (push) {
       // push to remote
       await tag.push(newTag)
+    } else {
+      await tag.remove(newTag)
     }
 
     // set output

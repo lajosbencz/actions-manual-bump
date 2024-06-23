@@ -28769,6 +28769,9 @@ async function run() {
             // push to remote
             await tag.push(newTag);
         }
+        else {
+            await tag.remove(newTag);
+        }
         // set output
         const v = tag.coerce(newTag);
         if (!v) {
