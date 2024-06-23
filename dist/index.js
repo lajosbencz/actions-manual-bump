@@ -28804,7 +28804,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.push = exports.create = exports.bump = exports.latest = exports.list = exports.filterValid = exports.coerce = void 0;
+exports.remove = exports.push = exports.create = exports.bump = exports.latest = exports.list = exports.filterValid = exports.coerce = void 0;
 const exec_1 = __nccwpck_require__(1514);
 const semver_1 = __importDefault(__nccwpck_require__(1383));
 /**
@@ -28931,6 +28931,18 @@ async function push(tag) {
     await (0, exec_1.exec)('git', ['push', 'origin', tag]);
 }
 exports.push = push;
+/**
+ * Remove a tag from the local repository.
+ * @param tag The tag to remove.
+ * @returns {Promise<void>} Resolves when the tag is removed.
+ * @throws {Error} Throws an error if the tag cannot be removed.
+ * @example
+ * await remove('v0.1.0')
+ */
+async function remove(tag) {
+    await (0, exec_1.exec)('git', ['tag', '-d', tag]);
+}
+exports.remove = remove;
 
 
 /***/ }),
