@@ -64,7 +64,7 @@ jobs:
           commit_message: bump package.json version
           file_pattern: 'package.json'
 
-      - name: Run Local Action
+      - name: Push tag
         id: tag-push
         uses: ./
         with:
@@ -85,15 +85,3 @@ jobs:
           files: |
             README.md
             LICENSE
-
-      - name: Print Output
-        id: output
-        run: |
-          echo "tag:"
-          echo "  old: ${{ steps.tag.outputs.old_tag }}"
-          echo "  new: ${{ steps.tag.outputs.new_tag }}"
-          echo "semver:"
-          echo "  old: ${{ steps.tag.outputs.old_tag_semver }}"
-          echo "  new: ${{ steps.tag.outputs.new_tag_semver }}"
-          echo "draft: ${{ steps.tag.outputs.draft }}"
-          echo "prerelease: ${{ steps.tag.outputs.prerelease }}"
