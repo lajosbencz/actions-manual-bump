@@ -70,7 +70,7 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^6.0.0",
     "@types/semver": "^7.5.8",
-    "semver": "^7.6.2"
+    "semver": "^7.6.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
